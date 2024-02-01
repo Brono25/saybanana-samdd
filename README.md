@@ -2,7 +2,7 @@
 This  `python` program reads audio files from the **Say Banana** Firebase storage, applies the `samdd_method` and uploads the results of the assessment as a json file to the Firebase storage.
 The program is wrapped in a docker container.
 
-The `json` reports are uploaded to the Firebase storage following a similiar file structure as the audio files, seen below.
+The JSON reports are uploaded to the Firebase storage following a similiar file structure as the audio files, seen below.
 ```txt
 └── user_example@email.com/ 
         ├── Daily_Audio/
@@ -23,23 +23,13 @@ The `json` reports are uploaded to the Firebase storage following a similiar fil
                             ├── 1633337330507.json
 ```
 
-## Setup and Installation
+## Setup & Installation
 
-
-
-
-
-
-
-The `SBFirebaseInterface` class is designed to read and write data related to audio processing.
-
-
-
-
-Create an API key for a service account in Firebase, you should get a JSON file with contents like below. Keep this key private, do not store in a repo.
-Find the path to the firebase storage bucket.
-```python
-credentials = {
+- **Step 1:** Clone the `samdd-method` and `SBFirebase-Interface` repositories to the `packages` directory.
+- **Step 2:** Copy the  `Speech-Attributes` and `phonemizer` directories to `cache/samdd/`.
+- **Step 3:** Create an API key on the Firebase website to give the `SBFirebase-Interface` module permission to access the SayBanana Firebase storage. It should give you a JSON file containing something like below.
+```json
+{
   "type": "service_account",
   "project_id": "example-5a501",
   "private_key_id": "abc1234567890def1234567890abcdef12345678",
@@ -51,22 +41,34 @@ credentials = {
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/example-5a501.iam.gserviceaccount.com"
 }
-bucket_path = "example-5a501.appspot.com"
+```
+- **Step 4:** Convert this key into base64 by the command `base64 -i firebase_api_key.json`. Do not store this key in a repository, keep it private.
+- **Step 5:** Create a .env file in the root dir and set the base64 key string into the environment variable `FIREBASE_CREDENTIALS_BASE64`. Add the path to the Firebase bucket into the `BUCKET_PATH` environment variable. The `.env` file should look similiar to below.
+```txt
+BUCKET_PATH="my_app-5a501.appspot.com" 
+FIREBASE_CREDENTIALS_BASE64=ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgIn....
 ```
 
-
-
-Initialise `SBFirebaseInterface` with the bucket path and the credentials. The firebase storage will now be able to be accessed.
-
-```python
-from SBFirebase.interface import SBFirebaseInterface
-
-sbfinterface = SBFirebaseInterface(bucket_path, credentials)
+After this setup the project file structure should look like as below.
+```txt
+.
+├── README.md
+├── cache/
+│   └── samdd/
+│       ├── Speech-Attributes/
+│       └── phonemizer/
+├── docker-compose.yml
+├── dockerfile
+├── environment.py
+├── packages/
+│   ├── SBFirebase-Interface/
+│   └── samdd-method/
+├── requirements.txt
+├── samdd-saybanana.py
+└── system/
+    └── .bashrc
 ```
 
-
-
-
-Assumptions:
-user IDs are the form (any non '_' characters)_local@domain
-
+Then run the commands to build and run.
+- `docker build -t saybanana-samdd`
+- `docker run saybanana-samdd`
