@@ -3,7 +3,6 @@
 phonemizer/
 Speech-Attributes/
 samdd-method/
-packages/
 keys/
 samdd/
 .env
