@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - ./system:/root/.bashrc:ro
+      - ./packages/samdd-method:/usr/src/app/samdd-method
+      - ./packages/SBFirebase-Interface:/usr/src/app/SBFirebase-Interface
+      - ./cache/samdd:/root/.cache/samdd
+      - ./logs:/usr/src/app/logs
+    env_file:
+      - ./.env
+    user: "prod"
