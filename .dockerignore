@@ -1,5 +1,7 @@
 #Project
 .gitkeep
+update.sh 
+.env.test
 
 #mac
 .DS_Store
