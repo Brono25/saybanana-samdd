@@ -3,12 +3,24 @@ services:
   app:
     build:
       context: .
-    volumes:
-      - ./system:/root/.bashrc:ro
-      - ./packages/samdd-method:/usr/src/app/samdd-method
-      - ./packages/SBFirebase-Interface:/usr/src/app/SBFirebase-Interface
-      - ./cache/samdd:/root/.cache/samdd
-      - ./logs:/usr/src/app/logs
+      dockerfile: Dockerfile
+    image: saybanana-samdd
+    container_name: saybanana-samdd
+    user: prod
+    entrypoint: ["/bin/bash", "/usr/src/app/entrypoint.sh"]
+
     env_file:
-      - ./.env
-    user: "prod"
+      - .env.test
+      
+
+#create a new container and run it in interactive mode and remove it on exit
+#service name is defined
+# docker-compose run --rm --entrypoint /bin/bash -it app
+
+
+#if it is already running
+#docker exec -it saybanana-samdd /bin/bash
+
+
+#to make edits to a compose
+#docker-compose up --build
