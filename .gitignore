@@ -3,10 +3,13 @@
 phonemizer/
 Speech-Attributes/
 samdd-method/
+SBFirebase-Interface/
 keys/
 samdd/
 .env
+.env.test
 logs/
+update.sh
 
 #mac
 .DS_Store
