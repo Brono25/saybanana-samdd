@@ -10,6 +10,7 @@ samdd/
 .env.test
 logs/
 update.sh
+.vscode/
 
 #mac
 .DS_Store
